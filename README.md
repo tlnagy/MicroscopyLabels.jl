@@ -11,6 +11,15 @@ easier if you have microscopy images and want to quickly annotate things. It
 aims to be *sane* over being customizable because really it's just a wrapper
 around `FreeTypeAbstraction.jl`.
 
+## Installation
+
+Until this package is registered, the easiest way to install is running the
+following command in the Julia REPL:
+
+```julia
+] add https://github.com/tlnagy/MicroscopyLabels.jl.git
+```
+
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
 [docs-dev-url]: https://tamasnagy.com/MicroscopyLabels.jl/dev
 
