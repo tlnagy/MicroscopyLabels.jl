@@ -12,13 +12,13 @@ aims to be *sane* over being customizable because really it's just a wrapper
 around `FreeTypeAbstraction.jl`.
 
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
-[docs-dev-url]: https://tamasnagy.com/ImageLabels.jl/dev
+[docs-dev-url]: https://tamasnagy.com/MicroscopyLabels.jl/dev
 
-[travis-img]: https://travis-ci.com/tlnagy/ImageLabels.jl.svg?branch=master
-[travis-url]: https://travis-ci.com/tlnagy/ImageLabels.jl
+[travis-img]: https://travis-ci.com/tlnagy/MicroscopyLabels.jl.svg?branch=master
+[travis-url]: https://travis-ci.com/tlnagy/MicroscopyLabels.jl
 
-[codecov-img]: https://codecov.io/gh/tlnagy/ImageLabels.jl/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/tlnagy/ImageLabels.jl
+[codecov-img]: https://codecov.io/gh/tlnagy/MicroscopyLabels.jl/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/tlnagy/MicroscopyLabels.jl
 
 [status-img]: https://www.repostatus.org/badges/latest/wip.svg
 [status-url]: https://www.repostatus.org/#wip
