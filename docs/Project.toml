@@ -2,5 +2,7 @@
 AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 FileIO = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
+ImageMagick = "6218d12a-5da1-5696-b52f-db25d2ecc6d1"
 ImageShow = "4e3cecfd-b093-5904-9786-8bbb286a6a31"
+OMETIFF = "2d0ec36b-e807-5756-994b-45af29551fcf"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
