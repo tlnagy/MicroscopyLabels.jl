@@ -8,7 +8,7 @@ using ImageMetadata
 using AxisArrays
 using ImageAxes
 
-export timestamp!
+export timestamp!, scalebar!
 
 const fontface = Array{Ptr{FreeType.FT_FaceRec}}(undef, 1)
 
@@ -110,5 +110,72 @@ end
     return nothing
 end
 
+
+scalebar!(img::ImageMeta, length::Unitful.Length; fontsize=0.04) = scalebar!(img.data, length, fontsize=fontsize)
+
+"""
+    scalebar!(img, len; fontsize)
+
+Add a scalebar `len` long in the bottom left of `img` along the x axis with
+text of size `fontsize` given as a fraction of the smallest spatial axis.
+
+## Example
+
+```jldoctest; output=false
+using Unitful: μm
+using AxisArrays
+using MicroscopyLabels
+
+tmp = AxisArray(zeros(200, 200), Axis{:y}(1μm:1μm:200μm), Axis{:x}(1μm:1μm:200μm));
+
+scalebar!(img, 25μm, fontsize=0.06)
+
+# output
+
+
+```
+"""
+function scalebar!(img::AxisArray, len::Unitful.Length; fontsize=0.04)
+    
+    all_axs = Set(axisnames(img))
+    pop!(all_axs, :x)
+    pop!(all_axs, :y)
+    axs = collect(all_axs)
+
+    offset = 20
+    imgh = size(img, Axis{:y})
+    imgw = size(img, Axis{:x})
+
+    pixelw = step(AxisArrays.axes(img, Axis{:x}).val)
+
+    # make the bar height 1% of the image height and set the correct length
+    barh = round(Int, 0.01*imgh)
+    barw = round(Int, len / pixelw)
+    
+    minsz = min(size(img, Axis{:y}), size(img, Axis{:x}))
+    sz = round(Int, fontsize*minsz)
+
+    for I in CartesianIndices(Tuple(size(img, Axis{ax}) for ax in axs))
+        if length(I) > 0
+            slice = view(img, (Axis{ax}(I[i]) for (i, ax) in enumerate(axs))...)
+        else
+            slice = img
+        end
+        
+        view(slice, Axis{:y}(imgh-offset-barh:imgh-offset), 
+                    Axis{:x}(imgw-offset-barw:imgw-offset)) .= oneunit(eltype(img))
+        
+        renderstring!(slice, 
+                      "$len", 
+                      MicroscopyLabels.fontface, 
+                      (sz, sz), 
+                      imgh-offset-barh÷2, imgw-offset-barw-offset÷2, 
+                      halign=:hright, 
+                      valign=:vcenter, 
+                      fcolor=oneunit(eltype(slice)), 
+                      bcolor=nothing
+            )
+    end
+end
 
 end #module
