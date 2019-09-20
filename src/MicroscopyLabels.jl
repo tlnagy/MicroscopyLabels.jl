@@ -128,7 +128,7 @@ using MicroscopyLabels
 
 tmp = AxisArray(zeros(200, 200), Axis{:y}(1μm:1μm:200μm), Axis{:x}(1μm:1μm:200μm));
 
-scalebar!(img, 25μm, fontsize=0.06)
+scalebar!(tmp, 25μm, fontsize=0.06)
 
 # output
 
