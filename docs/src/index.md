@@ -16,7 +16,7 @@ Say you have a OME-TIFF with lots of useful metadata exposed via
 
 
 ```@example ex1
-using FileIO, ImageView, AxisArrays
+using FileIO, ImageShow, AxisArrays
 using Unitful: μm
 using MicroscopyLabels
 
