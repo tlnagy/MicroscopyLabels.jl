@@ -66,7 +66,7 @@ timestamp!(img::ImageMeta; units::Unitful.TimeUnits=u"s") = timestamp!(data(img)
     pop!(all_axs, :y)
     pop!(all_axs, :time)
     axs = collect(all_axs)
-    
+
     # text will be 4% the size of the smaller spatial axis
     minsz = min(size(img, Axis{:y}), size(img, Axis{:x}))
     sz = round(Int, 0.04*minsz)
@@ -90,15 +90,15 @@ timestamp!(img::ImageMeta; units::Unitful.TimeUnits=u"s") = timestamp!(data(img)
             else # if there are only 3 axes than we don't need to take further subslices
                 subslice = slice
             end
-            
-            renderstring!(subslice, 
-                          "t=$pretty", 
-                          fontface, 
-                          (sz, sz), 
-                          10, 10, 
-                          halign=:hleft, 
-                          valign=:vtop, 
-                          fcolor=oneunit(eltype(subslice)), 
+
+            renderstring!(subslice,
+                          "t=$pretty",
+                          fontface,
+                          (sz, sz),
+                          10, 10,
+                          halign=:hleft,
+                          valign=:vtop,
+                          fcolor=oneunit(eltype(subslice)),
                           bcolor=nothing
             )
         end
@@ -136,7 +136,7 @@ scalebar!(tmp, 25μm, fontsize=0.06)
 ```
 """
 function scalebar!(img::AxisArray, len::Unitful.Length; fontsize=0.04)
-    
+
     all_axs = Set(axisnames(img))
     pop!(all_axs, :x)
     pop!(all_axs, :y)
@@ -151,7 +151,7 @@ function scalebar!(img::AxisArray, len::Unitful.Length; fontsize=0.04)
     # make the bar height 1% of the image height and set the correct length
     barh = round(Int, 0.01*imgh)
     barw = round(Int, len / pixelw)
-    
+
     minsz = min(size(img, Axis{:y}), size(img, Axis{:x}))
     sz = round(Int, fontsize*minsz)
 
@@ -161,21 +161,78 @@ function scalebar!(img::AxisArray, len::Unitful.Length; fontsize=0.04)
         else
             slice = img
         end
-        
-        view(slice, Axis{:y}(imgh-offset-barh:imgh-offset), 
+
+        view(slice, Axis{:y}(imgh-offset-barh:imgh-offset),
                     Axis{:x}(imgw-offset-barw:imgw-offset)) .= oneunit(eltype(img))
-        
-        renderstring!(slice, 
-                      "$len", 
-                      MicroscopyLabels.fontface, 
-                      (sz, sz), 
-                      imgh-offset-barh÷2, imgw-offset-barw-offset÷2, 
-                      halign=:hright, 
-                      valign=:vcenter, 
-                      fcolor=oneunit(eltype(slice)), 
+
+        renderstring!(slice,
+                      "$len",
+                      MicroscopyLabels.fontface,
+                      (sz, sz),
+                      imgh-offset-barh÷2, imgw-offset-barw-offset÷2,
+                      halign=:hright,
+                      valign=:vcenter,
+                      fcolor=oneunit(eltype(slice)),
                       bcolor=nothing
             )
     end
+end
+
+
+@traitfn function label_particles!(img::AA, masks::AxisArray{Int, 3}) where {AA <: AxisArray; HasTimeAxis{AA}}
+
+    for timepoint in timeaxis(img)
+
+        slice = view(img, Axis{:time}(timepoint))
+        mask = view(masks, Axis{:time}(timepoint))
+
+        label_particles!(slice, mask)
+    end
+end
+
+
+@traitfn function label_particles!(img::AA, mask::AxisArray{Int, 2}) where {AA <: AxisArray; !HasTimeAxis{AA}}
+    all_axs = Set(axisnames(img))
+    pop!(all_axs, :x)
+    pop!(all_axs, :y)
+
+    axs = collect(all_axs)
+    offset = 10.0
+
+    minsz = min(size(img, Axis{:y}), size(img, Axis{:x}))
+    sz = round(Int, 0.02*minsz)
+
+    centroids = component_centroids(mask)[2:end]
+
+    for I in CartesianIndices(Tuple(size(img, Axis{ax}) for ax in axs))
+
+            if length(I) > 0
+                subslice = view(img, (Axis{ax}(I[i]) for (i, ax) in enumerate(axs))...)
+            else # if there are only 3 axes than we don't need to take further subslices
+                subslice = img
+            end
+
+            for (idx, centroid) in enumerate(centroids)
+                if any(isnan.(centroid))
+                   continue
+                end
+                positions = round.(Int, centroid .+ offset)
+                # don't label centroids that fall outside the bounds
+                if any(positions .- size(subslice) .>= 0)
+                   continue
+                end
+                renderstring!(subslice,
+                              "$idx",
+                              fontface,
+                              (sz, sz),
+                              positions[1], positions[2],
+                              halign=:hleft,
+                              valign=:vtop,
+                              fcolor=oneunit(eltype(subslice)),
+                              bcolor=nothing
+                )
+            end
+        end
 end
 
 end #module
