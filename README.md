@@ -6,6 +6,8 @@
 
 Easily embed *sane* annotations in your microscopy images. 
 
+![](assets/labeled_image.gif)
+
 The reality is that you don't need this library, but it can make your life
 easier if you have microscopy images and want to quickly annotate things. It
 aims to be *sane* over being customizable because really it's just a wrapper

@@ -15,8 +15,8 @@ doctest(MicroscopyLabels)
     end
 
     @testset "4+ dimensions" begin
-        tmp = AxisArray(zeros(200, 200, 10, 3), 
-                        Axis{:x}(1:200), 
+        tmp = AxisArray(zeros(200, 200, 10, 3),
+                        Axis{:x}(1:200),
                         Axis{:y}(1:200),
                         Axis{:time}(1:10),
                         Axis{:position}(1:3)
