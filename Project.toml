@@ -1,7 +1,7 @@
 name = "MicroscopyLabels"
 uuid = "85a02ca2-d673-11e9-204d-33a606fed71d"
 authors = ["Tamas Nagy <tamas@tamasnagy.com>"]
-version = "0.0.1"
+version = "0.1.0"
 
 [deps]
 AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9"
