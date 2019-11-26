@@ -15,11 +15,10 @@ around `FreeTypeAbstraction.jl`.
 
 ## Installation
 
-Until this package is registered, the easiest way to install is running the
-following command in the Julia REPL:
+This package is available through the Julia registry and can be installed via the Julia REPL:
 
 ```julia
-] add https://github.com/tlnagy/MicroscopyLabels.jl.git
+] add MicroscopyLabels
 ```
 
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
