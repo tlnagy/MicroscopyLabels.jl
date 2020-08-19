@@ -1,7 +1,7 @@
 name = "MicroscopyLabels"
 uuid = "85a02ca2-d673-11e9-204d-33a606fed71d"
 authors = ["Tamas Nagy <tamas@tamasnagy.com>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 AxisArrays = "39de3d68-74b9-583c-8d2d-e117c070f3a9"
@@ -14,5 +14,11 @@ SimpleTraits = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [compat]
+AxisArrays = "0.4"
+FreeTypeAbstraction = "0.6, 0.7, 0.8"
 SimpleTraits = ">= 0.9.1"
+ImageAxes = "0.6"
+ImageMetadata = "0.9"
+ImageMorphology = "0.2"
+Unitful = "1"
 julia = "1"

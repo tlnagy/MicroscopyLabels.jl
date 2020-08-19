@@ -4,14 +4,15 @@ os:
   - linux
 
 julia:
-  - 1.2
+  - 1
   - nightly
 
-# # Uncomment the following lines to allow failures on nightly julia
-# # (tests will run but not make your overall status red)
-# matrix:
-#   allow_failures:
-#   - julia: nightly
+
+# only build the master branch since all other branches will have PRs associated
+# with them. See https://github.com/travis-ci/travis-ci/issues/1147#issuecomment-160820262
+branches:
+  only:
+    - "master"
 
 notifications:
   email: false
@@ -24,9 +25,11 @@ after_success:
   - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())';
 
 jobs:
+  allow_failures:
+  - julia: nightly
   include:
     - stage: "Documentation"
-      julia: 1.2
+      julia: 1
       os: linux
       script:
         - julia --project=docs/ -e 'using Pkg; Pkg.instantiate();

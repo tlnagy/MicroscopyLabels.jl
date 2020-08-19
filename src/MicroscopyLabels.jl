@@ -11,11 +11,11 @@ using ImageMorphology
 
 export timestamp!, scalebar!, label_particles!
 
-const fontface = Array{Ptr{FreeType.FT_FaceRec}}(undef, 1)
+const fontfaces = FTFont[]
 
 function __init__()
-    fontface[1] = newface(normpath(@__DIR__, "..", "assets",
-                                   "ubuntu-font-family-0.83", "Ubuntu-R.ttf"))[1]
+    push!(fontfaces, FTFont(normpath(@__DIR__, "..", "assets",
+                                   "ubuntu-font-family-0.83", "Ubuntu-R.ttf")))
 end
 
 """
@@ -58,7 +58,7 @@ timestamp!(tmp, units=minute)
 
 ```
 """
-timestamp!(img::ImageMeta; units::Unitful.TimeUnits=u"s") = timestamp!(data(img), units=units)
+timestamp!(img::ImageMeta; units::Unitful.TimeUnits=u"s") = timestamp!(arraydata(img), units=units)
 
 
 @traitfn function timestamp!(img::AA; units::Unitful.TimeUnits=u"s") where {AA <: AxisArray; HasTimeAxis{AA}}
@@ -94,8 +94,8 @@ timestamp!(img::ImageMeta; units::Unitful.TimeUnits=u"s") = timestamp!(data(img)
 
             renderstring!(subslice,
                           "t=$pretty",
-                          fontface,
-                          (sz, sz),
+                          fontfaces[1],
+                          sz,
                           10, 10,
                           halign=:hleft,
                           valign=:vtop,
@@ -168,8 +168,8 @@ function scalebar!(img::AxisArray, len::Unitful.Length; fontsize=0.04)
 
         renderstring!(slice,
                       "$len",
-                      MicroscopyLabels.fontface,
-                      (sz, sz),
+                      fontfaces[1],
+                      sz,
                       imgh-offset-barh÷2, imgw-offset-barw-offset÷2,
                       halign=:hright,
                       valign=:vcenter,
@@ -250,8 +250,8 @@ end
                 end
                 renderstring!(subslice,
                               "$idx",
-                              fontface,
-                              (sz, sz),
+                              fontfaces[1],
+                              sz,
                               positions[1], positions[2],
                               halign=:hleft,
                               valign=:vtop,
