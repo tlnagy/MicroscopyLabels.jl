@@ -7,6 +7,7 @@ julia:
   - 1
   - nightly
 
+
 # only build the master branch since all other branches will have PRs associated
 # with them. See https://github.com/travis-ci/travis-ci/issues/1147#issuecomment-160820262
 branches:
@@ -24,6 +25,8 @@ after_success:
   - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())';
 
 jobs:
+  allow_failures:
+  - julia: nightly
   include:
     - stage: "Documentation"
       julia: 1
